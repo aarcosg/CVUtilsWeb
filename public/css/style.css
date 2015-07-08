@@ -1,5 +1,5 @@
 .signal-thumb{
-    padding: 5px;
+    padding: 15px;
     border: medium none;
     border-radius: 5px;
 }
@@ -16,7 +16,7 @@
     border: 3px solid #26A69A;
 }
 
-#save_btn,#submit_class_btn{
+#classify_sample_btn,#submit_class_btn{
     width: 100%;
 }
 #previous_btn, #next_btn{
@@ -27,5 +27,25 @@
 .toast-danger{
     background-color: #EE6E73;
 }
+.toast-success{
+    background-color: #43a047;
+}
 
 .fixed {position:fixed;}
+
+.signal-thumb-img{
+    max-width: 50px;
+}
+.truncate {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+#next_crop_sample_btn, #previous_crop_sample_btn{
+    padding-left: 1rem;
+    padding-right: 1rem;
+}
+#next_crop_sample_btn > i,#previous_crop_sample_btn > i{
+    margin: 0px;
+}

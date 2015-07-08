@@ -2,7 +2,8 @@
     "require": {
         "php": ">=5.4.0",
         "ext-mbstring": "*",
-        "illuminate/database": "5.1.x-dev"
+        "illuminate/database": "5.1.x-dev",
+        "league/flysystem": "^1.0"
     },
     "require-dev": {
         "ext-fileinfo": "*",
@@ -17,7 +18,10 @@
     "autoload": {
         "psr-4": {
             "League\\Flysystem\\": "src/"
-        }
+        },
+        "classmap": [
+            "models"
+        ]
     },
     "autoload-dev": {
         "psr-4": {
