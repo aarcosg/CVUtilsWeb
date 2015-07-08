@@ -53,7 +53,7 @@ include_once("include/header.inc.php");
                                 if($i%6 == 0){ echo "<div class='row'>";} ?>
                                 <div class="col s2 center">
                                     <div class="signal-thumb" data-class="<?=$class->id?>">
-                                        <img class="signal-thumb-img" src="<?=$class_image_path?>">
+                                        <img class="signal-thumb-img" src="<?=$class_image_path?>" alt="<?=$class->name?>" title="<?=$class->name?>">
                                         <br>
                                         <span class="truncate"><?=$class->name?></span>
                                     </div>
