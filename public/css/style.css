@@ -30,6 +30,9 @@
 .toast-success{
     background-color: #43a047;
 }
+.toast-left{
+    float:left !important;
+}
 
 .fixed {position:fixed;}
 
@@ -48,4 +51,8 @@
 }
 #next_crop_sample_btn > i,#previous_crop_sample_btn > i{
     margin: 0px;
+}
+
+#sample_img{
+    width: 180px;
 }

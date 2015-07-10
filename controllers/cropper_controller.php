@@ -10,30 +10,18 @@ function processCropSample(){
         $sample_id = $_POST["sample"];
         $data = $_POST["crop_data"];
 
-        /*Images contain a border around the actual sign
-        * of 10 percent of the sign size, at least 5 pixel
-        */
-
-        $horizontal_margin = ($data["width"]*0.1 < 5) ? 5 : $data["width"]*0.1;
-        $vertical_margin = ($data["height"]*0.1 < 5) ? 5 : $data["height"]*0.1;
-
-        $data["x"]-=$horizontal_margin;
-        $data["y"]-=$vertical_margin;
-
-        $data["width"]+=$horizontal_margin*2;
-        $data["height"]+=$vertical_margin*2;
-
 
         $sample = Sample::find($sample_id);
         if(crop($sample->image,$data)){
-
             $sample->crop_x = round($data["x"],2);
             $sample->crop_y = round($data["y"],2);
             $sample->crop_width = round($data["width"],2);
             $sample->crop_height = round($data["height"],2);
-            $sample->save();
-
-            $response = ["success" => 1, "msg" => "Sample cropped succesfully"];
+            $sample->lock = 0;
+            if($sample->save()){
+                $_SESSION[SESSION_KEY_CROP_COUNTER]++;
+                $response = ["success" => 1, "msg" => "Cropped succesfully"];
+            }
         }else{
             $response = ["success" => 0, "msg" => "Failed to crop the image file"];
         }
@@ -46,11 +34,29 @@ function processCropSample(){
 function loadNextSampleToCrop(){
 
     $response = ["success" => 0, "id" => 0, "image" => ""];
-    $sample = Sample::whereNull('crop_x')->take(1)->get();
+    $sample = Sample::whereNull('crop_x')->where('lock',0)->take(1)->get();
     if($sample[0]){
+        lockSampleToCrop($sample[0]);
         $response = ["success" => 1, "id" => $sample[0]->id, "image" => $sample[0]->image];
     }
     return json_encode($response);
+}
+
+function lockSampleToCrop($sample){
+    if($sample->lock == 0){
+        $sample->lock = 1;
+        $sample->save();
+    }
+}
+
+function unlockSampleToCrop(){
+    if(isset($_POST["sample"]) && is_numeric($_POST["sample"]) && $_POST["sample"] > 0){
+        $sample = Sample::find($_POST["sample"]);
+        if($sample->lock == 1){
+            $sample->lock = 0;
+            $sample->save();
+        }
+    }
 }
 
 function crop($src, $data) {
@@ -85,6 +91,29 @@ function crop($src, $data) {
 
         $src_img_w = $src_w;
         $src_img_h = $src_h;
+
+        /*Images contain a border around the actual sign
+        * of 10 percent of the sign size, at least 5 pixel
+        */
+
+        $horizontal_margin = ($data["width"]*0.1 < 5) ? 5 : $data["width"]*0.1;
+        $vertical_margin = ($data["height"]*0.1 < 5) ? 5 : $data["height"]*0.1;
+
+        $data["x"]-=$horizontal_margin;
+        $data["y"]-=$vertical_margin;
+
+        $tmp_img_w = $data["width"]+$horizontal_margin*2;
+        $tmp_img_h = $data["height"]+$vertical_margin*2;
+        if($tmp_img_w + $data["x"] <= $src_w){
+            $data["width"] = $tmp_img_w;
+        }else{
+            $data["width"] += $tmp_img_w + $data["x"] - $src_w;
+        }
+        if($tmp_img_h + $data["y"] <= $src_h){
+            $data["height"] = $tmp_img_h;
+        }else{
+            $data["height"] += $tmp_img_h + $data["y"] - $src_h;
+        }
 
         $tmp_img_w = $data["width"];
         $tmp_img_h = $data["height"];

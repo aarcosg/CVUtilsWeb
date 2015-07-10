@@ -1,4 +1,7 @@
-const DIR_SIGNS_SAMPLES = "images/signs/samples/";
+const DIR_SIGNS = "images/signs/";
+const DIR_SIGNS_SAMPLES = DIR_SIGNS+"samples/";
+const DIR_SIGNS_CROPPED = DIR_SIGNS+"samples/cropped/";
+const DIR_SIGNS_CLASSES = DIR_SIGNS+"classes/";
 
 $(document).ready(function() {
 
@@ -96,6 +99,22 @@ $(document).ready(function() {
                 Materialize.toast(result.msg,5000,toastColor);
             }
         });
+    });
+
+    $('#search').keyup(function() {
+        var text = $(this).val();
+        if(text.length > 0){
+            var regex = new RegExp(text,"i");
+            $(".signal-thumb > span").each(function(){
+                if($(this).text().search(regex) < 0){
+                    $(this).parents(".signal-thumb").hide();
+                }else{
+                    $(this).parents(".signal-thumb").show();
+                }
+            })
+        }else{
+            $(".signal-thumb").show();
+        }
     });
 
 });
@@ -200,3 +219,39 @@ function initCropper(){
     image.cropper(options);
 }
 
+var page_load_class = 0;
+var page_load_crop = 0;
+var loading  = false;
+var progress = $(".progress");
+
+function loadResults(action,table_selector,page_load,href_edit){
+    $.ajax({
+        type: "post",
+        url: "results.php",
+        data: {action : action, page : page_load},
+        dataType: "json",
+        success: function(result){
+            $.each(result,function(index,sample){
+                $(table_selector).append(
+                    "<tr>"+
+                    "<td>"+sample.id+"</td>"+
+                    "<td><img src='"+DIR_SIGNS_SAMPLES+sample.image+"' class='responsive-img' style='max-width: 150px;'/></td>"+
+                    "<td><img src='"+(action === "loadClassificationResults" ? DIR_SIGNS_CLASSES+sample._class.image : DIR_SIGNS_CROPPED+sample.image)+"' class='responsive-img' style='max-width: 150px;'/></td>"+
+                    "<td><a href='"+href_edit+"?id="+sample.id+"' class='waves-effect waves-light btn'><i class='material-icons left'>mode_edit</i>Edit</a></td>"+
+                    "</tr>"
+                );
+            });
+            progress.hide();
+            loading = false;
+            if(action === "loadClassificationResults"){
+                page_load_class++;
+            }else if(action === "loadCroppedResults"){
+                page_load_crop++;
+            }
+        }
+    }).fail(function(xhr, ajaxOptions, thrownError) {
+        alert(thrownError);
+        progress.hide();
+        loading = false;
+    });
+}

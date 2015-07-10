@@ -1,13 +1,12 @@
 <?php
 require '../../computervision/config/common_require.php';
 
-if(isset($_POST["action"]) && $_POST["action"] == "classifySample"){
-    echo processClassifySample();
-    exit;
-}
-
-if(isset($_POST["action"]) && $_POST["action"] == "loadNextSampleToClassify"){
-    echo loadNextSampleToClassify();
+if(isset($_POST["action"])){
+    switch ($_POST["action"]){
+        case "classifySample": echo processClassifySample(); break;
+        case "loadNextSampleToClassify": echo loadNextSampleToClassify(); break;
+        case "unlockSampleToClassify": unlockSampleToClassify(); break;
+    }
     exit;
 }
 
@@ -76,6 +75,15 @@ include_once("include/header.inc.php");
 <script type="text/javascript">
     //var sample_index = 1;
     //var samples = <?php //echo json_encode($samples);?>;
+
+    $(window).bind("beforeunload", function() {
+        $.ajax({
+            url: "classifier.php",
+            type: "post",
+            data:{action : "unlockSampleToClassify", sample : $("#classify_sample_btn").attr("data-sample")},
+            async:false
+        });
+    });
     <?php if(!isset($sample)){ ?> loadNextSampleToClassify(); <?php } ?>
 
 </script>

@@ -1,13 +1,12 @@
 <?php
 require '../../computervision/config/common_require.php';
 
-if(isset($_POST["action"]) && $_POST["action"] == "cropSample"){
-    echo processCropSample();
-    exit;
-}
-
-if(isset($_POST["action"]) && $_POST["action"] == "loadNextSampleToCrop"){
-    echo loadNextSampleToCrop();
+if(isset($_POST["action"])){
+    switch ($_POST["action"]){
+        case "cropSample": echo processCropSample(); break;
+        case "loadNextSampleToCrop": echo loadNextSampleToCrop(); break;
+        case "unlockSampleToCrop": unlockSampleToCrop();  break;
+    }
     exit;
 }
 
@@ -25,11 +24,6 @@ include_once("include/header.inc.php");
 <div class="section">
     <div class="container">
         <div class="row">
-            <div class="col s10">
-                <div class="center">
-                    <img id="crop_img" src="<?=isset($sample) ? DIR_SIGNS.'samples/'.$sample->image : 'http://placehold.it/200x200?text=Empty' ?>">
-                </div>
-            </div>
             <div class="col s2">
                 <div class="center">
                     <!-- <a id="previous_crop_sample_btn" class="waves-effect waves-light btn-large orange"><i class="material-icons left">chevron_left</i></a>
@@ -38,11 +32,16 @@ include_once("include/header.inc.php");
                     <a id="crop_sample_btn" data-sample="<?=isset($sample) ? $sample->id : '-1' ?>" class="waves-effect waves-light btn-large">Save</a>
                 </div>
             </div>
+            <div class="col s10">
+                <div class="center">
+                    <img id="crop_img" src="<?=isset($sample) ? DIR_SIGNS.'samples/'.$sample->image : 'http://placehold.it/200x200?text=Empty' ?>">
+                </div>
+            </div>
         </div>
         <div class="row">
             <div class="col s12">
                 <div class="card-panel blue-grey darken-2">
-                    <span class="white-text">Adjust bounding box to traffic sign. The tool will add the proper margin automatically.</span>
+                    <span class="white-text">Adjust crop box to traffic sign. The tool will add the proper margin automatically.</span>
                 </div>
             </div>
             <div class="col s12">
@@ -77,7 +76,16 @@ include_once("include/header.inc.php");
     /*var sample_index = 1;
     var samples = <?php /*echo json_encode($samples)*/?>;*/
     initCropper();
+    $(window).on("beforeunload", function() {
+        $.ajax({
+            url: "cropper.php",
+            type: "post",
+            data:{action : "unlockSampleToCrop", sample : $("#crop_sample_btn").attr("data-sample")},
+            async:false
+        });
+    });
     <?php if(!isset($sample)){ ?> loadNextSampleToCrop(); <?php } ?>
+
 
 
 </script>
