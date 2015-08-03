@@ -23,12 +23,13 @@ $(document).ready(function() {
     });*/
 
     $(".signal-thumb").click(function(){
-        if($(this).hasClass("signal-thumb-active")){
+        /*if($(this).hasClass("signal-thumb-active")){
             $(this).removeClass("signal-thumb-active");
         }else{
             $(".signal-thumb-active").removeClass("signal-thumb-active");
             $(this).addClass("signal-thumb-active");
-        }
+        }*/
+        toggleSignalThumb($(this));
     });
 
     $("#classify_sample_btn").click(function(event){
@@ -94,6 +95,30 @@ $(document).ready(function() {
             success: function(result){
                 if(result.success == 1){
                     loadNextSampleToCrop();
+                }
+                var toastColor = result.success == 1 ? "toast-success" : "toast-danger";
+                Materialize.toast(result.msg,5000,toastColor);
+            }
+        });
+    });
+
+    $("#recommend_sample_btn").on("click",function(event){
+        event.preventDefault();
+        var sample = $(this).attr("data-sample");
+        $.ajax({
+            type: "post",
+            url: "classifier.php",
+            data: {action : 'recommendSampleClass', sample : $("#classify_sample_btn").attr("data-sample")},
+            dataType: "json",
+            success: function(result){
+                if(result.success == 1){
+                    var thumb = $(".signal-thumb[data-class='"+result.id+"']");
+                    if(!thumb.hasClass("signal-thumb-active")){
+                        toggleSignalThumb(thumb);
+                    }
+                    $('html, body').animate({
+                        scrollTop: thumb.offset().top-80
+                    },2000);
                 }
                 var toastColor = result.success == 1 ? "toast-success" : "toast-danger";
                 Materialize.toast(result.msg,5000,toastColor);
@@ -255,3 +280,13 @@ function loadResults(action,table_selector,page_load,href_edit){
         loading = false;
     });
 }
+
+function toggleSignalThumb(thumb){
+    if(thumb.hasClass("signal-thumb-active")){
+        thumb.removeClass("signal-thumb-active");
+    }else{
+        $(".signal-thumb-active").removeClass("signal-thumb-active");
+        thumb.addClass("signal-thumb-active");
+    }
+}
+

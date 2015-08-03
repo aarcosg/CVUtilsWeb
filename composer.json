@@ -3,7 +3,8 @@
         "php": ">=5.4.0",
         "ext-mbstring": "*",
         "illuminate/database": "5.1.x-dev",
-        "league/flysystem": "^1.0"
+        "league/flysystem": "^1.0",
+      "guzzlehttp/guzzle": "~6.0"
     },
     "require-dev": {
         "ext-fileinfo": "*",

@@ -6,6 +6,7 @@ if(isset($_POST["action"])){
         case "classifySample": echo processClassifySample(); break;
         case "loadNextSampleToClassify": echo loadNextSampleToClassify(); break;
         case "unlockSampleToClassify": unlockSampleToClassify(); break;
+        case "recommendSampleClass": echo recommendSampleClass();
     }
     exit;
 }
@@ -36,7 +37,8 @@ include_once("include/header.inc.php");
                      </div>
                 </div>-->
                 <img id="sample_img" src="<?=isset($sample) ? DIR_SIGNS.'samples/'.$sample->image : 'http://placehold.it/200x200?text=Empty' ?>" class="responsive-img z-depth-1">
-                <a id="classify_sample_btn" data-sample="<?=isset($sample) ? $sample->id : '-1' ?>" class="waves-effect waves-light btn-large"><i class="material-icons right">check_circle</i>Save</a>
+                <a id="classify_sample_btn" data-sample="<?=isset($sample) ? $sample->id : '-1' ?>" class="waves-effect waves-light btn-large"><i class="material-icons left">check_circle</i>Save</a>
+                <a id="recommend_sample_btn" style="margin-top: 15px;" class="waves-effect waves-light btn-large orange"><i class="material-icons left">help</i>Help me</a>
             </div>
             <!--<div class="col s8" style="overflow: auto;max-height: 90vh;">-->
             <div class="col s9 offset-s3">

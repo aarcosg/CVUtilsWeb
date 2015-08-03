@@ -16,7 +16,7 @@
     border: 3px solid #26A69A;
 }
 
-#classify_sample_btn,#submit_class_btn{
+#classify_sample_btn,#submit_class_btn,#recommend_sample_btn{
     width: 100%;
 }
 #previous_btn, #next_btn{

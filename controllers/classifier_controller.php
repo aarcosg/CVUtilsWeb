@@ -48,3 +48,24 @@ function unlockSampleToClassify(){
         }
     }
 }
+
+use GuzzleHttp\Client;
+function recommendSampleClass(){
+    $response = ["success" => 0, "id" => 0, "msg" => "Unknown class","image" => ""];
+    if(isset($_POST["sample"]) && is_numeric($_POST["sample"]) && $_POST["sample"] > 0){
+        $sample = Sample::find($_POST["sample"]);
+        if($sample){
+            $client = new Client([
+                "base_uri" => "http://alvaroarcos.co:8080/classify-ts/"
+            ]);
+            $svm_class_id = intval($client->get("germany/".$sample->image)->getBody()->getContents());
+            if($svm_class_id >= 0){
+                $class = ImageClass::where('germany',$svm_class_id)->first();
+                if($class){
+                    $response = ["success" => 1, "id" => $class->id, "msg" => "Class predicted", "image" => $class->image];
+                }
+            }
+        }
+    }
+    return json_encode($response);
+}
