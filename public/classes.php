@@ -59,6 +59,7 @@ include_once("include/header.inc.php");
                     <a href="https://es.wikipedia.org/wiki/Se%C3%B1ales_de_tr%C3%A1fico_verticales_de_Espa%C3%B1a" class="collection-item" target="_blank">Wikipedia</a>
                     <a href="http://www.boe.es/diario_boe/txt.php?id=BOE-A-2003-23514" class="collection-item" target="_blank">BOE</a>
                     <a href="http://www.traficoyservicios.com/esp/senalizacion-vial-vertical/senales-de-codigo-referencias/index.htm" class="collection-item" target="_blank">Tráfico y servicios</a>
+                    <a href="http://www.autoescuela.tv/senyales-14-Senales" class="collection-item" target="_blank">Auto Escuela</a>
                 </div>
             </div>
         </div>
