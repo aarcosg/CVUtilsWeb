@@ -35,7 +35,7 @@ $sources=[
         ,"image_query" => "//ul[@class='gallery mw-gallery-traditional'][6]/li[@class='gallerybox']/div/div[@class='thumb']/div/a/img/@src"
         ,"subclass" => 6
     ]
-    ,["url" => "https://es.wikipedia.org/wiki/Se%C3%B1ales_de_advertencia_de_peligro"
+    ,["url" => "https://es.wikipedia.org/wiki/Anexo:Señales_de_tráfico_de_peligro_de_España"
         ,"text_query" => "//ul[@class='gallery mw-gallery-traditional'][1]/li[@class='gallerybox']/div/div[@class='gallerytext']"
         ,"image_query" => "//ul[@class='gallery mw-gallery-traditional'][1]/li[@class='gallerybox']/div/div[@class='thumb']/div/a/img/@src"
         ,"subclass" => 3

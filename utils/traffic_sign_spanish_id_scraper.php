@@ -23,7 +23,7 @@ $sources=[
     ,["url" => "https://es.wikipedia.org/wiki/Anexo:Se%C3%B1ales_de_tr%C3%A1fico_de_reglamentaci%C3%B3n_de_Espa%C3%B1a"
         ,"text_query" => "//ul[@class='gallery mw-gallery-traditional'][6]/li[@class='gallerybox']/div/div[@class='gallerytext']"
     ]
-    ,["url" => "https://es.wikipedia.org/wiki/Se%C3%B1ales_de_advertencia_de_peligro"
+    ,["url" => "https://es.wikipedia.org/wiki/Anexo:Señales_de_tráfico_de_peligro_de_España"
         ,"text_query" => "//ul[@class='gallery mw-gallery-traditional'][1]/li[@class='gallerybox']/div/div[@class='gallerytext']"
     ],
     ["url" => "https://es.wikipedia.org/wiki/Anexo:Se%C3%B1ales_de_tr%C3%A1fico_de_indicaci%C3%B3n_de_Espa%C3%B1a"
