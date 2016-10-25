@@ -5,30 +5,9 @@ const DIR_SIGNS_CLASSES = DIR_SIGNS+"classes/";
 
 $(document).ready(function() {
 
-    /*$("#previous_btn").click(function(){
-            if(sample_index > 1){
-                sample_index--;
-                $("#sample_img").attr("src",DIR_SIGNS_SAMPLES + samples[sample_index].image);
-                $("#classify_sample_btn").attr("data-sample",sample_index);
-            }
-    });*/
-
-    /*$("#next_btn").click(function(){
-        loadNextSample();
-        if(sample_index < samples.length){
-            sample_index++;
-            $("#sample_img").attr("src",DIR_SIGNS_SAMPLES + samples[sample_index].image);
-            $("#classify_sample_btn").attr("data-sample",sample_index);
-        }
-    });*/
+    $(".button-collapse").sideNav();
 
     $(".signal-thumb").click(function(){
-        /*if($(this).hasClass("signal-thumb-active")){
-            $(this).removeClass("signal-thumb-active");
-        }else{
-            $(".signal-thumb-active").removeClass("signal-thumb-active");
-            $(this).addClass("signal-thumb-active");
-        }*/
         toggleSignalThumb($(this));
     });
 
@@ -39,19 +18,10 @@ $(document).ready(function() {
             var sample = $(this).attr("data-sample");
             $.ajax({
                 type: "post",
-                url: "classifier.php",
+                url: "annotation.php",
                 data: {action : "classifySample", sample : sample, selected_class : selected_class},
                 dataType: "json",
                 success: function(result){
-                    /*samples.splice(sample_index,1);
-                    if(sample_index < samples.length){
-                        sample_index++;
-                        $("#sample_img").attr("src",DIR_SIGNS_SAMPLES + samples[sample_index].image);
-                        $("#classify_sample_btn").attr("data-sample",sample_index);
-                    }else{
-                        $("#sample_img").attr("src","http://placehold.it/200x200?text=Empty");
-                        $("#classify_sample_btn").attr("data-sample",0).attr("disabled",true);
-                    }*/
                     if(result.success == 1){
                         loadNextSampleToClassify();
                     }
@@ -64,25 +34,6 @@ $(document).ready(function() {
         }
 
     });
-
-    /*$("#previous_crop_sample_btn").click(function(){
-         if(sample_index > 1){
-             sample_index--;
-             //$("#crop_img").attr("src",DIR_SIGNS_SAMPLES + samples[sample_index].image);
-             $("#crop_sample_btn").attr("data-sample",sample_index);
-             image.cropper("replace",DIR_SIGNS_SAMPLES + samples[sample_index-1].image);
-         }
-     });*/
-
-    /*$("#next_crop_sample_btn").click(function(){
-        //loadNextSampleToCrop();
-         if(sample_index < samples.length){
-             sample_index++;
-             //$("#crop_img").attr("src",DIR_SIGNS_SAMPLES + samples[sample_index].image);
-             $("#crop_sample_btn").attr("data-sample",sample_index);
-             image.cropper("replace",DIR_SIGNS_SAMPLES + samples[sample_index-1].image);
-         }
-     });*/
 
     $("#crop_sample_btn").click(function(event){
         event.preventDefault();
@@ -107,7 +58,7 @@ $(document).ready(function() {
         var sample = $(this).attr("data-sample");
         $.ajax({
             type: "post",
-            url: "classifier.php",
+            url: "annotation.php",
             data: {action : 'recommendSampleClass', sample : $("#classify_sample_btn").attr("data-sample")},
             dataType: "json",
             success: function(result){
@@ -147,7 +98,7 @@ $(document).ready(function() {
 function loadNextSampleToClassify(){
     $.ajax({
         type: "post",
-        url: "classifier.php",
+        url: "annotation.php",
         data: {action : "loadNextSampleToClassify"},
         dataType: "json",
         success: function(result){

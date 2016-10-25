@@ -68,7 +68,7 @@ include_once("include/header.inc.php");
                                 <td><?=$sample->id?></td>
                                 <td><img src="<?=DIR_SIGNS.'samples/'.$sample->image?>" class="responsive-img" style="max-width: 150px;"/></td>
                                 <td><img src="<?=DIR_SIGNS.'classes/'.$sample->_class->image?>"/> </td>
-                                <td><a href="classifier.php?id=<?=$sample->id?>" class="waves-effect waves-light btn"><i class="material-icons left">mode_edit</i>Edit</a></td>
+                                <td><a href="annotation.php?id=<?=$sample->id?>" class="waves-effect waves-light btn"><i class="material-icons left">mode_edit</i>Edit</a></td>
                             </tr>
                         <?php } */?>
                         </tbody>

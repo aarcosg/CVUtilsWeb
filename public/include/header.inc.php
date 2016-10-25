@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns="http://www.w3.org/1999/html">
 <head>
     <title><?=$title?> - Computer Vision tools - Universidad de Sevilla</title>
     <meta charset="UTF-8">
@@ -18,19 +18,20 @@
     <nav class="light-blue lighten-1" role="navigation">
         <div class="nav-wrapper container">
             <a id="logo-container" href="#" class="brand-logo"><?=$title?></a>
-            <?php if ($title == "Classifier"){?>
-            <div class="right">
-                <div class="input-field">
-                    <input id="search" type="search">
-                    <label for="search"><i class="material-icons">search</i></label>
-                </div>
-            </div>
-            <?php } ?>
-            <ul class="right">
-                <li><a href="classifier.php"><i class="material-icons left">class</i>Classifier</a></li>
+            <a href="#" data-activates="mobile-menu" class="button-collapse"><i class="material-icons">menu</i></a>
+            <ul class="right hide-on-med-and-down">
+                <li><a href="classifier.php"><i class="material-icons left">camera_alt</i>Classifier</a></li>
+                <li><a href="annotation.php"><i class="material-icons left">class</i>Annotation</a></li>
                 <li><a href="cropper.php"><i class="material-icons left">crop</i>Cropper</a></li>
                 <li><a href="classes.php"><i class="material-icons left">layers</i>Classes</a></li>
                 <li><a href="results.php"><i class="material-icons left">photo_library</i>Results</a></li>
+            </ul>
+            <ul class="side-nav" id="mobile-menu">
+                <li><a href="classifier.php">Classifier</a></li>
+                <li><a href="annotation.php">Annotation</a></li>
+                <li><a href="cropper.php">Cropper</a></li>
+                <li><a href="classes.php">Classes</a></li>
+                <li><a href="results.php">Results</a></li>
             </ul>
         </div>
     </nav>

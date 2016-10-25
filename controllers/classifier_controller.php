@@ -1,71 +1,86 @@
 <?php
 
-function processClassifySample(){
+function processTestSingleImage(){
 
-    $response = ["success" => 0, "msg" => "Ops! Sample not classified"];
+    $response = ["success" => 0, "sample" => "", "msg" => "Missing fields", "predictions" => ""];
 
-    if(isset($_POST["sample"]) && is_numeric($_POST["sample"]) && $_POST["sample"] > 0
-        && isset($_POST["selected_class"]) && is_numeric($_POST["selected_class"]) && $_POST["selected_class"] > 0){
-        $sample_id = $_POST["sample"];
-        $class_id = $_POST["selected_class"];
+    if(isset($_FILES["file"]["name"])){
 
-        $sample = Sample::find($sample_id);
-        $sample->class_id = $class_id;
-        $sample->lock = 0;
-        if($sample->save()){
-            $_SESSION[SESSION_KEY_CLASS_COUNTER]++;
-            $response = ["success" => 1, "msg" => "Sample classified succesfully"];
+        $target_file = DIR_SIGNS_CLASSIFIER_UPLOADS.basename($_FILES["file"]["name"]);
+
+        $image_file_type = pathinfo($target_file,PATHINFO_EXTENSION);
+
+        $check = getimagesize($_FILES["file"]["tmp_name"]);
+        if($check !== false) {
+            $msg = "File is an image - " . $check["mime"] . ".";
+            $success = 1;
+        } else {
+            $msg = "File is not an image.";
+            $success = 0;
         }
-    }
 
-    return json_encode($response);
-}
-
-function loadNextSampleToClassify(){
-
-    $response = ["success" => 0, "id" => 0, "image" => ""];
-    $sample = Sample::where('class_id',0)->where('lock',0)->take(1)->get();
-    if($sample[0]){
-        lockSampleToClassify($sample[0]);
-        $response = ["success" => 1, "id" => $sample[0]->id, "image" => $sample[0]->image];
-    }
-    return json_encode($response);
-}
-
-function lockSampleToClassify($sample){
-    if($sample->lock == 0){
-        $sample->lock = 1;
-        $sample->save();
-    }
-}
-
-function unlockSampleToClassify(){
-    if(isset($_POST["sample"]) && is_numeric($_POST["sample"]) && $_POST["sample"] > 0){
-        $sample = Sample::find($_POST["sample"]);
-        if($sample->lock == 1){
-            $sample->lock = 0;
-            $sample->save();
+        // Check file size
+        if ($_FILES["file"]["size"] > 500000) {
+            $msg = "Sorry, your file is too large.";
+            $success = 0;
         }
-    }
-}
 
-use GuzzleHttp\Client;
-function recommendSampleClass(){
-    $response = ["success" => 0, "id" => 0, "msg" => "Unknown class","image" => ""];
-    if(isset($_POST["sample"]) && is_numeric($_POST["sample"]) && $_POST["sample"] > 0){
-        $sample = Sample::find($_POST["sample"]);
-        if($sample){
-            $client = new Client([
-                "base_uri" => "http://alvaroarcos.co:8080/classify-ts/"
-            ]);
-            $svm_class_id = intval($client->get("germany/".$sample->image)->getBody()->getContents());
-            if($svm_class_id >= 0){
-                $class = ImageClass::where('germany',$svm_class_id)->first();
-                if($class){
-                    $response = ["success" => 1, "id" => $class->id, "msg" => "Class predicted", "image" => $class->image];
+        // Check if file already exists
+        if (file_exists($target_file)) {
+            $msg = "Sorry, file already exists.";
+            $success = 0;
+        }
+
+        // Allow certain file formats
+        if($image_file_type != "jpg" && $image_file_type != "png" && $image_file_type != "jpeg"
+            && $image_file_type != "gif" ) {
+            $msg = "Sorry, only JPG, JPEG, PNG & GIF files are allowed.";
+            $success = 0;
+        }
+
+        if(!$success){
+            $msg = "Sorry, your file was not uploaded.";
+        }else{
+            $file_name = uniqid('img_').".".$image_file_type;
+            if (move_uploaded_file($_FILES["file"]["tmp_name"], DIR_SIGNS_CLASSIFIER_UPLOADS.$file_name)) {
+                $msg = "The file ". basename( $_FILES["file"]["name"]). " has been uploaded.";
+                $response["sample"] = $file_name;
+
+                $client = new GuzzleHttp\Client();
+                $digits_response = $client->post(
+                    'http://arcos.io:5000/models/images/classification/classify_one.json',
+                    [
+                        "form_params" => [
+                            'job_id' => '20161024-081150-5437',
+                            'image_path' => 'http://arcos.io/cv_tools/'.DIR_SIGNS_CLASSIFIER_UPLOADS.$file_name
+                        ]
+                    ]
+                );
+
+                $digits_predictions = json_decode($digits_response->getBody())->predictions;
+
+                $traffic_signs = array();
+                foreach ($digits_predictions as $prediction){
+                    $spain_id = $prediction[0];
+                    $confidence = $prediction[1];
+                    $traffic_sign = ImageClass::where('spain_id', '=', $spain_id)->first();
+                    $traffic_signs[] = array(
+                        'traffic_sign' => $traffic_sign,
+                        'confidence' => $confidence
+                    );
                 }
+
+                $response['predictions'] = $traffic_signs;
+
+            } else {
+                $msg = "Sorry, there was an error uploading your file.";
             }
         }
+
+        $response["success"] = $success;
+        $response["msg"] = $msg;
+
     }
-    return json_encode($response);
+
+    return $response;
 }
