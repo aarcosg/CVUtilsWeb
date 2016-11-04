@@ -23,17 +23,24 @@ include_once("include/header.inc.php");
                 <form id="test_single_image_form" method="post" action="#" enctype="multipart/form-data">
                      <div class="row">
                          <div class="file-field input-field col s12">
-                             <label for="file">Test image file</label>
-                             <input class="file-path validate" type="text"/>
+                             <label for="file">Image file</label>
+                             <input class="file-path" type="text"/>
                              <div class="btn orange">
-                                 <input id="file" name="file" type="file" accept="image/jpeg,image/png,image/gif" required="true" />
+                                 <input id="file" name="file" type="file" accept="image/jpeg,image/png,image/gif" />
                                  <span>Image file</span>
                              </div>
                          </div>
                      </div>
                     <div class="row">
+                        <div class="center-align">OR</div>
+                        <div class="input-field col s12">
+                            <label for="url">Image URL</label>
+                            <input name="url" id="url" type="text"/>
+                        </div>
+                    </div>
+                    <div class="row">
                         <div class="col s12">
-                            <button id="submit_test_image_btn" class="btn-large waves-effect waves-light" type="submit" name="action" value="submitSingleTestImage" form="test_single_image_form">
+                            <button id="submit_test_image_btn" class="btn-large waves-effect waves-light col s12" type="submit" name="action" value="submitSingleTestImage" form="test_single_image_form">
                                 Submit
                             </button>
                         </div>
@@ -43,7 +50,7 @@ include_once("include/header.inc.php");
             <?php if(isset($predictions)) { ?>
             <div class="col s3 push-s1">
                 <h6 class="blue-grey-text text-lighten-1">Image uploaded</h6>
-                <img id="sample_img" src="<?=isset($sample) ? DIR_SIGNS_CLASSIFIER_UPLOADS.$sample : 'http://placehold.it/200x200?text=None' ?>" class="responsive-img z-depth-1">
+                <img id="sample_img" src="<?=isset($sample) ? $sample : 'http://placehold.it/200x200?text=None' ?>" class="responsive-img z-depth-1">
             </div>
             <div class="col s3 push-s2">
                 <h6 class="blue-grey-text text-lighten-1">Predictions</h6>

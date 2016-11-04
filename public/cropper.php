@@ -34,7 +34,7 @@ include_once("include/header.inc.php");
             </div>
             <div class="col s10">
                 <div class="center">
-                    <img id="crop_img" src="<?=isset($sample) ? DIR_SIGNS.'samples/'.$sample->image : 'http://placehold.it/200x200?text=Empty' ?>">
+                    <img id="crop_img" src="<?=DIR_SIGNS.'samples/'.$sample->image?>">
                 </div>
             </div>
         </div>
@@ -73,8 +73,6 @@ include_once("include/header.inc.php");
 <?php include_once("include/footer.inc.php"); ?>
 
 <script type="text/javascript">
-    /*var sample_index = 1;
-    var samples = <?php /*echo json_encode($samples)*/?>;*/
     initCropper();
     $(window).on("beforeunload", function() {
         $.ajax({
