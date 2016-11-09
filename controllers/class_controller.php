@@ -51,7 +51,7 @@ function processSubmitClass(){
             $file_name = uniqid('img_').".".$image_file_type;
             if (move_uploaded_file($_FILES["file"]["tmp_name"], $target_dir.$file_name)) {
                 $msg = "The file ". basename( $_FILES["file"]["name"]). " has been uploaded.";
-                $class = new ImageClass();
+                $class = new TrafficSignClass();
                 $class->name = $name;
                 $class->image = $file_name;
                 $class->subclass_id = $subclass_id;

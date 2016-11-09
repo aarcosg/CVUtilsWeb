@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/html">
 <head>
-    <title><?=$title?> - Computer Vision tools - Universidad de Sevilla</title>
+    <title><?=$title?> - Computer Vision tools</title>
     <meta charset="UTF-8">
     <meta name=description content="">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -15,23 +15,22 @@
 </head>
 <body>
 <div class="navbar-fixed">
-    <nav class="light-blue lighten-1" role="navigation">
-        <div class="nav-wrapper container">
+    <!-- Dropdown Structure -->
+    <ul id="dropdown-annotation" class="dropdown-content">
+        <li><a href="annotation.php">Annotate</a></li>
+        <li class="divider"></li>
+        <li><a href="cropper.php">Cropper</a></li>
+        <li class="divider"></li>
+        <li><a href="classes.php">Classes</a></li>
+        <li class="divider"></li>
+        <li><a href="results.php">Annotation results</a></li>
+    </ul>
+    <nav role="navigation">
+        <div class="nav-wrapper">
             <a id="logo-container" href="#" class="brand-logo"><?=$title?></a>
-            <a href="#" data-activates="mobile-menu" class="button-collapse"><i class="material-icons">menu</i></a>
-            <ul class="right hide-on-med-and-down">
+            <ul class="right">
                 <li><a href="classifier.php"><i class="material-icons left">camera_alt</i>Classifier</a></li>
-                <li><a href="annotation.php"><i class="material-icons left">class</i>Annotation</a></li>
-                <li><a href="cropper.php"><i class="material-icons left">crop</i>Cropper</a></li>
-                <li><a href="classes.php"><i class="material-icons left">layers</i>Classes</a></li>
-                <li><a href="results.php"><i class="material-icons left">photo_library</i>Results</a></li>
-            </ul>
-            <ul class="side-nav" id="mobile-menu">
-                <li><a href="classifier.php">Classifier</a></li>
-                <li><a href="annotation.php">Annotation</a></li>
-                <li><a href="cropper.php">Cropper</a></li>
-                <li><a href="classes.php">Classes</a></li>
-                <li><a href="results.php">Results</a></li>
+                <li><a id="dropdown-annotation-button" href="#" data-activates="dropdown-annotation">Annotation<i class="material-icons right">arrow_drop_down</i></a></li>
             </ul>
         </div>
     </nav>

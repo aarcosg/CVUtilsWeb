@@ -11,12 +11,12 @@ if(isset($_POST["action"])){
 }
 
 if(isset($_GET["id"]) && is_numeric($_GET["id"]) && $_GET["id"] > 0){
-    $sample = Sample::find($_GET["id"]);
+    $sample = AnnotationSample::find($_GET["id"]);
 }
 
 
-//$samples = Sample::all();
-//$samples = Sample::whereNull('crop_x')->get();
+//$samples = AnnotationSample::all();
+//$samples = AnnotationSample::whereNull('crop_x')->get();
 
 $title = "Cropper";
 include_once("include/header.inc.php");

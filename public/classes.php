@@ -1,7 +1,7 @@
 <?php
 require '../../computervision/config/common_require.php';
 
-$subclasses = ImageSubclass::all();
+$subclasses = TrafficSignSubclass::all();
 
 if(isset($_POST["action"]) && $_POST["action"] == "submitClass"){
     $response = processSubmitClass();

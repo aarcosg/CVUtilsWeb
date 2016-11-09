@@ -5,5 +5,11 @@
 <script type="text/javascript" src="js/cropper.min.js"></script>
 <script type="text/javascript" src="js/app.js"></script>
 
+<script type="text/javascript">
+    $(document).ready(function() {
+        $("#dropdown-annotation-button").dropdown();
+    });
+</script>
+
 </body>
 </html>

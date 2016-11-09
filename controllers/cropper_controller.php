@@ -11,7 +11,7 @@ function processCropSample(){
         $data = $_POST["crop_data"];
 
 
-        $sample = Sample::find($sample_id);
+        $sample = AnnotationSample::find($sample_id);
         if(crop($sample->image,$data)){
             $sample->crop_x = round($data["x"],2);
             $sample->crop_y = round($data["y"],2);
@@ -34,7 +34,7 @@ function processCropSample(){
 function loadNextSampleToCrop(){
 
     $response = ["success" => 0, "id" => 0, "image" => ""];
-    $sample = Sample::whereNull('crop_x')->where('lock',0)->take(1)->get();
+    $sample = AnnotationSample::whereNull('crop_x')->where('lock',0)->take(1)->get();
     if($sample[0]){
         lockSampleToCrop($sample[0]);
         $response = ["success" => 1, "id" => $sample[0]->id, "image" => $sample[0]->image];
@@ -51,7 +51,7 @@ function lockSampleToCrop($sample){
 
 function unlockSampleToCrop(){
     if(isset($_POST["sample"]) && is_numeric($_POST["sample"]) && $_POST["sample"] > 0){
-        $sample = Sample::find($_POST["sample"]);
+        $sample = AnnotationSample::find($_POST["sample"]);
         if($sample->lock == 1){
             $sample->lock = 0;
             $sample->save();

@@ -100,7 +100,7 @@ function saveClasses($classes,$subclass){
         file_put_contents($file_path, file_get_contents($class['image']));
 
         //Save class in db
-        $image_class = new ImageClass();
+        $image_class = new TrafficSignClass();
         $image_class->spain_id = $class['spain_id'];
         $image_class->name = $class['text'];
         $image_class->image = $file_name;

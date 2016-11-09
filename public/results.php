@@ -4,26 +4,26 @@ define ("SAMPLES_PER_GROUP",20);
 
 
 if(isset($_POST["action"]) && $_POST["action"] == "loadClassificationResults" && isset($_POST["page"]) && is_numeric($_POST["page"])){
-    $samples_classification = Sample::where('class_id','>',0)->skip($_POST["page"]*SAMPLES_PER_GROUP)->take(SAMPLES_PER_GROUP)->with('_class')->get();
+    $samples_classification = AnnotationSample::where('class_id','>',0)->skip($_POST["page"]*SAMPLES_PER_GROUP)->take(SAMPLES_PER_GROUP)->with('_class')->get();
     echo json_encode($samples_classification);
     exit;
 }
 
 if(isset($_POST["action"]) && $_POST["action"] == "loadCroppedResults" && isset($_POST["page"]) && is_numeric($_POST["page"])){
-    $samples_cropped  = Sample::whereNotNull('crop_x')->skip($_POST["page"]*SAMPLES_PER_GROUP)->take(SAMPLES_PER_GROUP)->get();
+    $samples_cropped  = AnnotationSample::whereNotNull('crop_x')->skip($_POST["page"]*SAMPLES_PER_GROUP)->take(SAMPLES_PER_GROUP)->get();
     echo json_encode($samples_cropped);
     exit;
 }
 
-$samples_classification = Sample::where('class_id','>',0)->get();
-$samples_cropped = Sample::whereNotNull('crop_x')->get();
+$samples_classification = AnnotationSample::where('class_id','>',0)->get();
+$samples_cropped = AnnotationSample::whereNotNull('crop_x')->get();
 
 
 $total_groups_class = ceil($samples_classification->count()/SAMPLES_PER_GROUP);
 $total_groups_crop = ceil($samples_cropped->count()/SAMPLES_PER_GROUP);
 
 
-$title = "Results";
+$title = "Annotation results";
 include_once("include/header.inc.php");
 ?>
 <div class="section">

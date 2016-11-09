@@ -56,7 +56,7 @@ foreach($sources as $source){
             $sign_text = trim(strip_tags(html_entity_decode(scrape_between(getInnerHTML($texts->item($i)),'<br>','</center>'))));
         }
         echo "Scraped: ".$sign_id." - ".$sign_text."<br>";
-        $classes = ImageClass::where('name', 'like', $sign_text.'%')->get();
+        $classes = TrafficSignClass::where('name', 'like', $sign_text.'%')->get();
         echo "<br><b>Matches in db [".$classes->count()."]:</b>";
         echo "<ul>";
         foreach ($classes as $class){

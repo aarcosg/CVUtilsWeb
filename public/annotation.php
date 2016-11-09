@@ -12,14 +12,14 @@ if(isset($_POST["action"])){
 }
 
 if(isset($_GET["id"]) && is_numeric($_GET["id"]) && $_GET["id"] > 0){
-    $sample = Sample::find($_GET["id"]);
+    $sample = AnnotationSample::find($_GET["id"]);
 }
 
 
-//$sample = Sample::where('class_id',0)->take(1)->get();
-$subclasses = ImageSubclass::all();
+//$sample = AnnotationSample::where('class_id',0)->take(1)->get();
+$subclasses = TrafficSignSubclass::all();
 
-$title = "Annotation";
+$title = "Annotate";
 include_once("include/header.inc.php");
 ?>
 <div class="section">
@@ -39,7 +39,7 @@ include_once("include/header.inc.php");
             </div>
             <div class="col s9 offset-s3">
                 <?php foreach($subclasses as $subclass){
-                    $classes=ImageClass::where('subclass_id',$subclass->id)->get();?>
+                    $classes=TrafficSignClass::where('subclass_id',$subclass->id)->get();?>
                     <h5 class="blue-grey-text text-lighten-1"><?=$subclass->name?></h5>
                     <div class="card">
                         <div class="card-content">
